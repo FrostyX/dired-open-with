@@ -27,8 +27,8 @@ given file type, change your XDG settings.
 ** Alternatives
 
 If you don't need an "Open with" dialog but rather opening files in
-their default appliaction, you can use ~M-x dired-open~ or ~M-x
-dired-open-xdg~ from [[https://github.com/Fuco1/dired-hacks#dired-open][dired-hacks.]]
+their default appliaction, you can use ~M-x dired-open~ or
+~M-x dired-open-xdg~ from [[https://github.com/Fuco1/dired-hacks#dired-open][dired-hacks.]]
 
 There is also ~helm-dired-open~ which as the name suggests is limited
 to [[https://github.com/emacs-helm/helm][Helm]]. However, it provides some configuration options that this
