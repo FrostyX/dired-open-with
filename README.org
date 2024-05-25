@@ -1,0 +1,35 @@
+#+TITLE: M-x dired-open-with
+
+Right-clicking a file in most GUI file managers provides an
+"Open with" menu for choosing an application to be used. This package
+implements such functionality for Emacs default file manager Dired.
+
+** Installation
+
+The package is not available on MELPA yet, please use Quelpa (or your
+preferred package manager) to install.
+
+#+BEGIN_SRC emacs-lisp
+(use-package dired-open-with
+  :quelpa (dired-open-with
+           :fetcher github
+           :repo "FrostyX/dired-open-with"
+           :branch "main"))
+#+END_SRC
+
+** Configuration
+
+The ~M-x dired-open-with~ command works out of the box without any
+additional configuration. If you want to change suggestions for a
+given file type, change your XDG settings.
+#+END_SRC
+
+** Alternatives
+
+If you don't need an "Open with" dialog but rather opening files in
+their default appliaction, you can use ~M-x dired-open~ or ~M-x
+dired-open-xdg~ from [[https://github.com/Fuco1/dired-hacks#dired-open][dired-hacks.]]
+
+There is also ~helm-dired-open~ which as the name suggests is limited
+to [[https://github.com/emacs-helm/helm][Helm]]. However, it provides some configuration options that this
+packages doesn't have.
