@@ -76,8 +76,7 @@ selected application."
 (defun dired-open-with--applications-for-file (path)
   "Return a list of applications that can open a given PATH.
 Every application is represented as a Hash Table."
-  (let* ((path (dired-get-file-for-visit))
-         (extension (file-name-extension path))
+  (let* ((extension (file-name-extension path))
          (mimetype (mailcap-extension-to-mime extension))
          (applications (xdg-mime-apps mimetype)))
     (mapcar #'xdg-desktop-read-file applications)))
