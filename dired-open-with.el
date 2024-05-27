@@ -40,9 +40,8 @@
 
 ;;;###autoload
 (defun dired-open-with ()
-  "Provide an 'Open with' dialog for opening files in external applications
-from Dired. Such dialogs are commonly known from GUI file managers, when
-right-clicking a file. "
+  "An 'Open with' dialog for opening files in external applications from Dired.
+Such dialogs are known from GUI file managers, when right-clicking a file."
   (interactive)
   (let* ((path (dired-get-file-for-visit))
          (apps (dired-open-with--applications-for-file path))
@@ -58,7 +57,7 @@ right-clicking a file. "
 
 (defun dired-open-with--completing-read (apps)
   "A convenience wrapper around `completing-read' for this package.
-It takes a list of applications (represented as Hash Tables) and returns the
+It takes a list of APPS (represented as Hash Tables) and returns the
 selected application."
   (let* ((items (mapcar (lambda (app) (cons (gethash "Name" app) app)) apps))
          (max-length (apply #'max (mapcar (lambda (x) (length (car x))) items)))
@@ -75,8 +74,8 @@ selected application."
     (cdr (assoc value items))))
 
 (defun dired-open-with--applications-for-file (path)
-  "Return a list of applications that can open a given file.
-Every application is represented as a Hash Table. "
+  "Return a list of applications that can open a given PATH.
+Every application is represented as a Hash Table."
   (let* ((path (dired-get-file-for-visit))
          (extension (file-name-extension path))
          (mimetype (mailcap-extension-to-mime extension))
@@ -84,9 +83,9 @@ Every application is represented as a Hash Table. "
     (mapcar #'xdg-desktop-read-file applications)))
 
 (defun dired-open-with--xdg-format-exec (exec path)
-  "Format XDG application Exec string and return a full command that can be
-executed. For the list of keys and their meaning, please see
-https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#exec-variables
+  "Format XDG application EXEC string with PATH and return an executable command.
+For the list of keys and their meaning, please see
+https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s07.html
 
 Oh cmon ... this must be already implemented somewhere."
   (let* ((url path)
@@ -101,11 +100,13 @@ Oh cmon ... this must be already implemented somewhere."
     cmd))
 
 (defun dired-open-with--start-process (cmd)
-  "The functions for running processes implemented in `dired-open' doesn't
+  "Start a process for this CMD.
+The functions for running processes implemented in `dired-open' doesn't
 support inputting only a command (already containing the file) but always
 operate with an executable and then concatenating a file at the end of the
-line. That is not suitable for XDG applications that contain formatting in their
-Exec and expect us to inject the filename into a specific part of the string."
+line.  That is not suitable for XDG applications that contain formatting in
+their Exec and expect us to inject the filename into a specific part of the
+string."
   (apply 'start-process
          (append '("dired-open-with" nil)
                  (split-string cmd))))
