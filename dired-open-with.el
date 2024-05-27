@@ -52,6 +52,16 @@ right-clicking a file. "
                           (let ((hash (xdg-desktop-read-file app)))
                             (cons (gethash "Name" hash) hash)))
                         applications))
+
+         (max-length (apply #'max (mapcar (lambda (x) (length (car x))) items)))
+         (completion-extra-properties
+          `(:annotation-function
+            ,(lambda (candidate)
+               (let ((annotation (gethash "Comment" (cdr (assoc candidate items)))))
+                 (concat
+                  (make-string (- (+ max-length 2) (length candidate)) ?\s)
+                  annotation)))))
+
          (value (completing-read
                  "Open with: "
                  (mapcar (lambda (item)
