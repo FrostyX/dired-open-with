@@ -1,7 +1,7 @@
 #+TITLE: M-x dired-open-with
 
 Right-clicking a file in most GUI file managers provides an
-"Open with" menu for choosing which application should used. This package
+"Open with" menu for choosing which application should be used. This package
 implements such functionality for Emacs default file manager Dired.
 
 [[images/dired-open-with.png]]
