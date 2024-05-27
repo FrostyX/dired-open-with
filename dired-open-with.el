@@ -1,11 +1,11 @@
-;;; dired-open-with.el --- "Open with" dialog for Dired -*- lexical-binding: t; -*-
+;;; dired-open-with.el --- And "Open with" dialog for Dired -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2024  Jakub Kadlčík
 
 ;; Author: Jakub Kadlčík <frostyx@email.cz>
 ;; URL: https://github.com/FrostyX/dired-open-with
 ;; Version: 1.0
-;; Package-Requires: ((emacs "26.3"))
+;; Package-Requires: ((emacs "27.1"))
 ;; Keywords: files, dired, xdg, open-with
 
 ;;; License:
