@@ -45,39 +45,45 @@ from Dired. Such dialogs are commonly known from GUI file managers, when
 right-clicking a file. "
   (interactive)
   (let* ((path (dired-get-file-for-visit))
-         (extension (file-name-extension path))
-         (mimetype (mailcap-extension-to-mime extension))
-         (applications (xdg-mime-apps mimetype))
+         (applications (dired-open-with--applications-for-file path))
          (items (mapcar (lambda (app)
-                          (let ((hash (xdg-desktop-read-file app)))
-                            (cons (gethash "Name" hash) hash)))
+                          (cons (gethash "Name" app) app))
                         applications))
+         (name (dired-open-with--completing-read items)))
 
-         (max-length (apply #'max (mapcar (lambda (x) (length (car x))) items)))
-         (completion-extra-properties
-          `(:annotation-function
-            ,(lambda (candidate)
-               (let ((annotation (gethash "Comment" (cdr (assoc candidate items)))))
-                 (concat
-                  (make-string (- (+ max-length 2) (length candidate)) ?\s)
-                  annotation)))))
-
-         (value (completing-read
-                 "Open with: "
-                 (mapcar (lambda (item)
-                           (gethash "Name" (cdr item)))
-                         items)))
-
-         (hash (cdr (assoc value items)))
-         (cmd (dired-open-with--xdg-format-exec (gethash "Exec" hash) path)))
-
-    (dired-open-with--start-process cmd)))
+    (dired-open-with--start-process
+     (dired-open-with--xdg-format-exec
+      (gethash "Exec" (cdr (assoc name items))) path))))
 
 ;;;; Functions
 
 ;;;;; Public
 
 ;;;;; Private
+
+(defun dired-open-with--completing-read (items)
+  "A wrapper around `completing-read' to easily display annotated candidates."
+  (let* ((max-length (apply #'max (mapcar (lambda (x) (length (car x))) items)))
+         (completion-extra-properties
+          `(:annotation-function
+           ,(lambda (candidate)
+              (let ((annotation (gethash "Comment" (cdr (assoc candidate items)))))
+                (concat
+                 (make-string (- (+ max-length 2) (length candidate)) ?\s)
+                 annotation))))))
+
+    (completing-read
+     "Open with: "
+     (mapcar (lambda (item) (gethash "Name" (cdr item))) items))))
+
+(defun dired-open-with--applications-for-file (path)
+  "Return a list of applications that can open a given file.
+Every application is represented as a Hash Table. "
+  (let* ((path (dired-get-file-for-visit))
+         (extension (file-name-extension path))
+         (mimetype (mailcap-extension-to-mime extension))
+         (applications (xdg-mime-apps mimetype)))
+    (mapcar #'xdg-desktop-read-file applications)))
 
 (defun dired-open-with--xdg-format-exec (exec path)
   "Format XDG application Exec string and return a full command that can be
