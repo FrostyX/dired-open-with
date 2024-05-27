@@ -1,13 +1,13 @@
 #+TITLE: M-x dired-open-with
 
 Right-clicking a file in most GUI file managers provides an
-"Open with" menu for choosing an application to be used. This package
+"Open with" menu for choosing which application should used. This package
 implements such functionality for Emacs default file manager Dired.
 
 [[images/dired-open-with.png]]
 
 There is a [[https://www.youtube.com/watch?v=ZU1E0M8FAX4][video about helm-dired-open]]. You can use this package
-exactly the same, only the command is ~M-x dired-open-with~.
+exactly the same, only the command is now ~M-x dired-open-with~.
 
 ** Installation
 
@@ -25,16 +25,15 @@ preferred package manager) to install.
 ** Configuration
 
 The ~M-x dired-open-with~ command works out of the box without any
-additional configuration. If you want to change suggestions for a
+additional configuration. If you want to change candidates for a
 given file type, change your XDG settings.
-#+END_SRC
 
 ** Alternatives
 
-If you don't need an "Open with" dialog but rather opening files in
+If you don't need an "Open with" dialog but rather open files in
 their default appliaction, you can use ~M-x dired-open~ or
-~M-x dired-open-xdg~ from [[https://github.com/Fuco1/dired-hacks#dired-open][dired-hacks.]]
+~M-x dired-open-xdg~ from the [[https://github.com/Fuco1/dired-hacks#dired-open][dired-hacks]] package.
 
-There is also ~helm-dired-open~ which as the name suggests is limited
+There is also [[https://github.com/FrostyX/helm-dired-open][helm-dired-open]], which as the name suggests is limited
 to [[https://github.com/emacs-helm/helm][Helm]]. However, it provides some configuration options that this
 packages doesn't have.
