@@ -35,6 +35,7 @@
 (require 's)
 (require 'xdg)
 (require 'mailcap)
+(require 'dired)
 
 ;;;; Commands
 
