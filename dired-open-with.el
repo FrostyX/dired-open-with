@@ -53,7 +53,7 @@
 Such dialogs are known from GUI file managers, when right-clicking a file."
   (interactive)
 
-  (when (xdg-runtime-dir)
+  (unless (xdg-runtime-dir)
     (error (concat
             "You are running an unsupported operating system or desktop "
             "environment. It doesn't comply with the XDG specification.")))
