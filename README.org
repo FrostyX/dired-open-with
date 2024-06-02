@@ -11,15 +11,11 @@ exactly the same, only the command is now ~M-x dired-open-with~.
 
 ** Installation
 
-The package is not available on MELPA yet, please use Quelpa (or your
-preferred package manager) to install.
+The package is available on [[https://melpa.org/#/dired-open-with][MELPA]]
 
 #+BEGIN_SRC emacs-lisp
 (use-package dired-open-with
-  :quelpa (dired-open-with
-           :fetcher github
-           :repo "FrostyX/dired-open-with"
-           :branch "main"))
+  :ensure t)
 #+END_SRC
 
 ** Configuration
