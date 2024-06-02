@@ -91,12 +91,19 @@ selected application."
 (defun dired-open-with--applications-for-file (path)
   "Return a list of applications that can open a given PATH.
 Every application is represented as a Hash Table."
-  (let* ((extension (file-name-extension path))
-         (mimetype (mailcap-extension-to-mime extension))
-         (applications (xdg-mime-apps mimetype)))
-    (if applications
-        (mapcar #'xdg-desktop-read-file applications)
-      (error "No XDG appliations found for MIME type: %s" mimetype))))
+  (let ((name (file-name-nondirectory path))
+        (extension (file-name-extension path)))
+    (unless extension
+      (error "File with unknown MIME type: %s" name))
+
+    (let ((mimetype (mailcap-extension-to-mime extension)))
+      (unless mimetype
+        (error "File with unknown MIME type: %s" name))
+
+      (let ((applications (xdg-mime-apps mimetype)))
+        (if applications
+            (mapcar #'xdg-desktop-read-file applications)
+          (error "No XDG appliations found for MIME type: %s" mimetype))))))
 
 (defun dired-open-with--xdg-format-exec (exec path)
   "Format XDG application EXEC string with PATH and return an executable command.
