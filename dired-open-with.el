@@ -80,7 +80,9 @@ Every application is represented as a Hash Table."
   (let* ((extension (file-name-extension path))
          (mimetype (mailcap-extension-to-mime extension))
          (applications (xdg-mime-apps mimetype)))
-    (mapcar #'xdg-desktop-read-file applications)))
+    (if applications
+        (mapcar #'xdg-desktop-read-file applications)
+      (error "No XDG appliations found for MIME type: %s" mimetype))))
 
 (defun dired-open-with--xdg-format-exec (exec path)
   "Format XDG application EXEC string with PATH and return an executable command.
