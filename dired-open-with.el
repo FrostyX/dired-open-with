@@ -26,6 +26,14 @@
 ;;; Commentary:
 ;;
 ;; An 'Open with' dialog for opening files in external applications from Dired.
+;;
+;; This package is built upon freedesktop.org features and therefore works
+;; only on operating systems and desktop environments that comply with the
+;; XDG specifications. That should be true for the majority of GNU/Linux
+;; distributions and BSD variants. I don't know what is the situation on
+;; MS Windows, macOS, or and mobile systems.
+;;
+;; https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html
 
 
 ;;; Code:
@@ -44,6 +52,12 @@
   "An 'Open with' dialog for opening files in external applications from Dired.
 Such dialogs are known from GUI file managers, when right-clicking a file."
   (interactive)
+
+  (when (xdg-runtime-dir)
+    (error (concat
+            "You are running an unsupported operating system or desktop "
+            "environment. It doesn't comply with the XDG specification.")))
+
   (let* ((path (dired-get-file-for-visit))
          (apps (dired-open-with--applications-for-file path))
          (app (dired-open-with--completing-read apps))
