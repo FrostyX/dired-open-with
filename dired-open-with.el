@@ -5,7 +5,7 @@
 ;; Author: Jakub Kadlčík <frostyx@email.cz>
 ;; URL: https://github.com/FrostyX/dired-open-with
 ;; Version: 1.0
-;; Package-Requires: ((emacs "27.1") (s "1.13.0"))
+;; Package-Requires: ((emacs "27.1"))
 ;; Keywords: files, dired, xdg, open-with
 
 ;;; License:
@@ -40,7 +40,6 @@
 
 ;;;; Requirements
 
-(require 's)
 (require 'xdg)
 (require 'mailcap)
 (require 'dired)
@@ -108,19 +107,16 @@ Every application is represented as a Hash Table."
 (defun dired-open-with--xdg-format-exec (exec path)
   "Format XDG application EXEC string with PATH and return an executable command.
 For the list of keys and their meaning, please see
-https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s07.html
-
-Oh cmon ... this must be already implemented somewhere."
+https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s07.html"
   (let* ((url path)
-         (cmd exec)
-         (cmd (s-replace "%f" path cmd))
-         (cmd (s-replace "%F" path cmd))
-         (cmd (s-replace "%u" url cmd))
-         (cmd (s-replace "%U" url cmd))
-         (cmd (s-replace "%i" "" cmd))
-         (cmd (s-replace "%c" "" cmd))
-         (cmd (s-replace "%k" "" cmd)))
-    cmd))
+         (spec `((?f . ,path)
+                 (?F . ,path)
+                 (?u . ,url)
+                 (?U . ,url)
+                 (?i . "")
+                 (?c . "")
+                 (?k . ""))))
+    (format-spec exec spec 'ignore)))
 
 (defun dired-open-with--start-process (cmd)
   "Start a process for this CMD.
