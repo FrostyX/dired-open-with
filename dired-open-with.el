@@ -108,7 +108,8 @@ Every application is represented as a Hash Table."
   "Format XDG application EXEC string with PATH and return an executable command.
 For the list of keys and their meaning, please see
 https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s07.html"
-  (let* ((url path)
+  (let* ((path (shell-quote-argument (file-truename path)))
+         (url path)
          (spec `((?f . ,path)
                  (?F . ,path)
                  (?u . ,url)
@@ -128,7 +129,7 @@ their Exec and expect us to inject the filename into a specific part of the
 string."
   (apply 'start-process
          (append '("dired-open-with" nil)
-                 (split-string cmd))))
+                 (split-string-shell-command cmd))))
 
 ;;;; Footer
 
