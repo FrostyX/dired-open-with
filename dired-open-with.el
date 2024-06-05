@@ -82,9 +82,14 @@ selected application."
                  (concat
                   (make-string (- (+ max-length 2) (length name)) ?\s)
                   annotation)))))
-         (value (completing-read
-                 "Open with: "
-                 (mapcar (lambda (item) (gethash "Name" (cdr item))) items))))
+         (coll (mapcar (lambda (item) (gethash "Name" (cdr item))) items))
+         (value
+          (completing-read
+           "Open with: "
+           (lambda (string pred action)
+             (if (eq action 'metadata)
+                 `(metadata (display-sort-function . identity))
+               (complete-with-action action coll string pred))))))
     (cdr (assoc value items))))
 
 (defun dired-open-with--applications-for-file (path)
