@@ -57,7 +57,7 @@ Such dialogs are known from GUI file managers, when right-clicking a file."
             "You are running an unsupported operating system or desktop "
             "environment. It doesn't comply with the XDG specification.")))
 
-  (let* ((path (dired-get-file-for-visit))
+  (let* ((path (file-truename (dired-get-file-for-visit)))
          (apps (dired-open-with--applications-for-file path))
          (app (dired-open-with--completing-read apps))
          (cmd (dired-open-with--xdg-format-exec (gethash "Exec" app) path)))
@@ -113,7 +113,7 @@ Every application is represented as a Hash Table."
   "Format XDG application EXEC string with PATH and return an executable command.
 For the list of keys and their meaning, please see
 https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s07.html"
-  (let* ((path (shell-quote-argument (file-truename path)))
+  (let* ((path (shell-quote-argument path))
          (url path)
          (spec `((?f . ,path)
                  (?F . ,path)
