@@ -4,7 +4,7 @@
 
 ;; Author: Jakub Kadlčík <frostyx@email.cz>
 ;; URL: https://github.com/FrostyX/dired-open-with
-;; Version: 1.0
+;; Version: 1.1
 ;; Package-Requires: ((emacs "28.1"))
 ;; Keywords: files, dired, xdg, open-with
 
