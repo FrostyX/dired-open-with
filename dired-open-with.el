@@ -92,22 +92,28 @@ selected application."
                (complete-with-action action coll string pred))))))
     (cdr (assoc value items))))
 
+(defun dired-open-with--mimetype (path)
+  "Return a mimetype for file or directory at a given PATH."
+  (let ((name (file-name-nondirectory path))
+        (extension (file-name-extension path)))
+    (cond ((file-directory-p path) "inode/directory")
+          ((not extension) (error "File with unknown MIME type: %s" name))
+          (t (mailcap-extension-to-mime extension)))))
+
 (defun dired-open-with--applications-for-file (path)
   "Return a list of applications that can open a given PATH.
 Every application is represented as a Hash Table."
   (let ((name (file-name-nondirectory path))
-        (extension (file-name-extension path)))
-    (unless extension
+        (mimetype (dired-open-with--mimetype path)))
+
+    (unless mimetype
       (error "File with unknown MIME type: %s" name))
 
-    (let ((mimetype (mailcap-extension-to-mime extension)))
-      (unless mimetype
-        (error "File with unknown MIME type: %s" name))
+    (let ((applications (xdg-mime-apps mimetype)))
+      (if applications
+          (mapcar #'xdg-desktop-read-file applications)
+        (error "No XDG appliations found for MIME type: %s" mimetype)))))
 
-      (let ((applications (xdg-mime-apps mimetype)))
-        (if applications
-            (mapcar #'xdg-desktop-read-file applications)
-          (error "No XDG appliations found for MIME type: %s" mimetype))))))
 
 (defun dired-open-with--xdg-format-exec (exec path)
   "Format XDG application EXEC string with PATH and return an executable command.
@@ -138,7 +144,7 @@ string."
 
 ;;;; Footer
 
-;; LocalWords: freedesktop org html ar
+;; LocalWords: freedesktop org html ar mimetype
 
 (provide 'dired-open-with)
 
